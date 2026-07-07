@@ -1,0 +1,71 @@
+version: "3.8"
+
+services:
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: book-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: bookdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d bookdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - book-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: book-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: bookdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      UPLOAD_DIR: /app/uploads/book-covers
+      APP_BASE_URL: http://localhost:8080
+      CORS_ALLOWED_ORIGINS: http://localhost:5173
+    ports:
+      - "8080:8080"
+    volumes:
+      - book-covers:/app/uploads/book-covers
+    networks:
+      - book-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: http://localhost:8080
+    container_name: book-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    networks:
+      - book-network
+
+networks:
+  book-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  book-covers:

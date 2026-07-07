@@ -1,0 +1,128 @@
+{
+  "info": {
+    "name": "Book Management System API",
+    "description": "Collection for testing the Book Management System REST API endpoints (Spring Boot backend).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" }
+  ],
+  "item": [
+    {
+      "name": "Create Book",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "book",
+              "value": "{\n  \"title\": \"Effective Java\",\n  \"author\": \"Joshua Bloch\",\n  \"isbn\": \"9780134685991\",\n  \"publisher\": \"Addison-Wesley\",\n  \"genre\": \"Programming\",\n  \"price\": 45.99,\n  \"quantity\": 10,\n  \"description\": \"Best practices for the Java platform.\"\n}",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": { "raw": "{{baseUrl}}/api/books", "host": ["{{baseUrl}}"], "path": ["api", "books"] }
+      }
+    },
+    {
+      "name": "Get All Books",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/books", "host": ["{{baseUrl}}"], "path": ["api", "books"] }
+      }
+    },
+    {
+      "name": "Get Book By ISBN",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/books/isbn/9780134685991",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "books", "isbn", "9780134685991"]
+        }
+      }
+    },
+    {
+      "name": "Get Book By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/books/1", "host": ["{{baseUrl}}"], "path": ["api", "books", "1"] }
+      }
+    },
+    {
+      "name": "Update Book",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "book",
+              "value": "{\n  \"title\": \"Effective Java (3rd Edition)\",\n  \"author\": \"Joshua Bloch\",\n  \"isbn\": \"9780134685991\",\n  \"publisher\": \"Addison-Wesley\",\n  \"genre\": \"Programming\",\n  \"price\": 49.99,\n  \"quantity\": 8,\n  \"description\": \"Updated description.\"\n}",
+              "type": "text"
+            },
+            {
+              "key": "image",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": { "raw": "{{baseUrl}}/api/books/1", "host": ["{{baseUrl}}"], "path": ["api", "books", "1"] }
+      }
+    },
+    {
+      "name": "Delete Book",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": { "raw": "{{baseUrl}}/api/books/1", "host": ["{{baseUrl}}"], "path": ["api", "books", "1"] }
+      }
+    },
+    {
+      "name": "Upload Book Cover Image",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "key": "image",
+              "type": "file",
+              "src": ""
+            }
+          ]
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/books/1/image",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "books", "1", "image"]
+        }
+      }
+    },
+    {
+      "name": "Fetch Book Cover Image",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/images/<filename>.jpg",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "images", "<filename>.jpg"]
+        }
+      }
+    }
+  ]
+}
